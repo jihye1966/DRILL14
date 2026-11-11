@@ -3,6 +3,14 @@ from pico2d import get_canvas_height, get_canvas_width, load_image
 import game_framework
 
 
+FLOCK_Y_RATIOS = (0.12, 0.22, 0.31, 0.40, 0.49,
+                  0.58, 0.67, 0.76, 0.84, 0.92)
+FLOCK_POSITIONS = (
+    (120, 185), (520, 225), (940, 275), (1380, 325), (300, 375),
+    (760, 420), (1180, 470), (1450, 515), (180, 555), (860, 590),
+)
+
+
 class Bird:
     """bird_animation.png의 14개 프레임을 사용해 좌우로 비행하는 새."""
 
@@ -75,15 +83,9 @@ def create_flock():
     """화면 높이에 맞춰 서로 다른 궤도로 움직이는 10마리를 만든다."""
     canvas_height = get_canvas_height()
     usable_height = max(1, canvas_height - Bird.TOP_MARGIN - Bird.BOTTOM_MARGIN)
-    y_ratios = (0.12, 0.22, 0.31, 0.40, 0.49,
-                0.58, 0.67, 0.76, 0.84, 0.92)
-    positions = (
-        (120, 185), (520, 225), (940, 275), (1380, 325), (300, 375),
-        (760, 420), (1180, 470), (1450, 515), (180, 555), (860, 590),
-    )
     birds = []
-    for index, (x, speed) in enumerate(positions):
-        y = Bird.TOP_MARGIN + usable_height * y_ratios[index]
+    for index, (x, speed) in enumerate(FLOCK_POSITIONS):
+        y = Bird.TOP_MARGIN + usable_height * FLOCK_Y_RATIOS[index]
         direction_speed = speed if index % 2 == 0 else -speed
         birds.append(Bird(x, y, direction_speed, index))
     return birds
