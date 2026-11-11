@@ -54,13 +54,11 @@ def finish():
 
 def update():
     game_world.update()
-    delay(0.1)  # 0.01초마다 업데이트
 
 def render():
     clear_canvas()
     game_world.render()
     update_canvas()
-
 
 
 
