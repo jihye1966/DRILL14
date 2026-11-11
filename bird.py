@@ -5,6 +5,7 @@ import game_framework
 
 FLOCK_Y_RATIOS = (0.12, 0.22, 0.31, 0.40, 0.49,
                   0.58, 0.67, 0.76, 0.84, 0.92)
+FLOCK_COUNT = 10
 FLOCK_POSITIONS = (
     (120, 185), (520, 225), (940, 275), (1380, 325), (300, 375),
     (760, 420), (1180, 470), (1450, 515), (180, 555), (860, 590),
@@ -81,7 +82,7 @@ class Bird:
 
 def create_flock():
     """화면 높이에 맞춰 서로 다른 궤도로 움직이는 10마리를 만든다."""
-    if len(FLOCK_POSITIONS) != len(FLOCK_Y_RATIOS):
+    if len(FLOCK_POSITIONS) != FLOCK_COUNT or len(FLOCK_Y_RATIOS) != FLOCK_COUNT:
         raise ValueError('새 떼의 위치와 높이 데이터 개수가 다릅니다.')
 
     canvas_height = get_canvas_height()
