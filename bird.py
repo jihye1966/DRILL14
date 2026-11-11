@@ -22,7 +22,7 @@ class Bird:
     DRAW_WIDTH = 120
     DRAW_HEIGHT = 110
     FRAME_RATE = 12.0
-    MARGIN_X = DRAW_WIDTH // 2
+    HALF_DRAW_WIDTH = DRAW_WIDTH // 2
     TOP_MARGIN = 70
     BOTTOM_MARGIN = 90
     FRAME_RECTS = [
@@ -50,8 +50,8 @@ class Bird:
         self.frame = (self.frame + self.FRAME_RATE * dt) % self.FRAME_COUNT
 
     def _bounce_at_walls(self):
-        left = self.MARGIN_X
-        right = get_canvas_width() - self.MARGIN_X
+        left = self.HALF_DRAW_WIDTH
+        right = get_canvas_width() - self.HALF_DRAW_WIDTH
 
         if self.x < left:
             self.x = left
