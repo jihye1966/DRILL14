@@ -1,0 +1,86 @@
+from pico2d import get_canvas_height, get_canvas_width, load_image
+
+import game_framework
+
+
+class Bird:
+    """bird_animation.png의 14개 프레임을 사용해 좌우로 비행하는 새."""
+
+    IMAGE_PATH = 'bird_animation.png'
+    FRAME_WIDTH = 183
+    FRAME_HEIGHT = 168
+    DRAW_WIDTH = 120
+    DRAW_HEIGHT = 110
+    FRAME_RATE = 12.0
+    MARGIN_X = DRAW_WIDTH // 2
+    TOP_MARGIN = 70
+    BOTTOM_MARGIN = 90
+    FRAME_RECTS = [
+        (column * FRAME_WIDTH, row * FRAME_HEIGHT)
+        for row, columns in enumerate((5, 5, 4))
+        for column in range(columns)
+    ]
+    image = None
+
+    def __init__(self, x, y, speed, frame_offset=0):
+        if Bird.image is None:
+            Bird.image = load_image(self.IMAGE_PATH)
+
+        self.x = float(x)
+        self.y = float(y)
+        self.speed = abs(float(speed))
+        self.direction = 1 if speed >= 0 else -1
+        self.frame = float(frame_offset % len(self.FRAME_RECTS))
+
+    def update(self):
+        dt = game_framework.frame_time
+        self.x += self.direction * self.speed * dt
+        self._bounce_at_walls()
+        self.frame = (self.frame + self.FRAME_RATE * dt) % len(
+            self.FRAME_RECTS
+        )
+
+    def _bounce_at_walls(self):
+        left = self.MARGIN_X
+        right = get_canvas_width() - self.MARGIN_X
+
+        if self.x < left:
+            self.x = left
+            self.direction = 1
+        elif self.x > right:
+            self.x = right
+            self.direction = -1
+
+    def draw(self):
+        frame_x, frame_y = self.FRAME_RECTS[int(self.frame)]
+        flip = '' if self.direction == 1 else 'h'
+        Bird.image.clip_composite_draw(
+            frame_x,
+            frame_y,
+            self.FRAME_WIDTH,
+            self.FRAME_HEIGHT,
+            0,
+            flip,
+            self.x,
+            self.y,
+            self.DRAW_WIDTH,
+            self.DRAW_HEIGHT,
+        )
+
+
+def create_flock():
+    """화면 높이에 맞춰 서로 다른 궤도로 움직이는 10마리를 만든다."""
+    canvas_height = get_canvas_height()
+    usable_height = max(1, canvas_height - Bird.TOP_MARGIN - Bird.BOTTOM_MARGIN)
+    y_ratios = (0.12, 0.22, 0.31, 0.40, 0.49,
+                0.58, 0.67, 0.76, 0.84, 0.92)
+    positions = (
+        (120, 185), (520, 225), (940, 275), (1380, 325), (300, 375),
+        (760, 420), (1180, 470), (1450, 515), (180, 555), (860, 590),
+    )
+    birds = []
+    for index, (x, speed) in enumerate(positions):
+        y = Bird.TOP_MARGIN + usable_height * y_ratios[index]
+        direction_speed = speed if index % 2 == 0 else -speed
+        birds.append(Bird(x, y, direction_speed, index))
+    return birds
