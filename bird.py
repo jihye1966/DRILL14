@@ -7,6 +7,7 @@ class Bird:
     """bird_animation.png의 14개 프레임을 사용해 좌우로 비행하는 새."""
 
     IMAGE_PATH = 'bird_animation.png'
+    FRAME_LAYOUT = (5, 5, 4)
     FRAME_WIDTH = 183
     FRAME_HEIGHT = 168
     DRAW_WIDTH = 120
@@ -17,7 +18,7 @@ class Bird:
     BOTTOM_MARGIN = 90
     FRAME_RECTS = [
         (column * FRAME_WIDTH, row * FRAME_HEIGHT)
-        for row, columns in enumerate((5, 5, 4))
+        for row, columns in enumerate(FRAME_LAYOUT)
         for column in range(columns)
     ]
     FRAME_COUNT = len(FRAME_RECTS)
