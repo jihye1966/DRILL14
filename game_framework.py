@@ -31,6 +31,7 @@ def quit():
     running = False
 
 frame_time = 0.0
+MAX_FRAME_TIME = 1.0 / 30.0
 
 def run(start_mode):
     global running, stack, frame_time
@@ -42,7 +43,7 @@ def run(start_mode):
         start_mode.init()
         while running:
             frame_start = time.perf_counter()
-            frame_time = frame_start - previous_time
+            frame_time = min(frame_start - previous_time, MAX_FRAME_TIME)
             previous_time = frame_start
             stack[-1].handle_events()
             stack[-1].update()
