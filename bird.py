@@ -10,6 +10,8 @@ FLOCK_POSITIONS = (
     (120, 185), (520, 225), (940, 275), (1380, 325), (300, 375),
     (760, 420), (1180, 470), (1450, 515), (180, 555), (860, 590),
 )
+FRAME_WIDTH = 183
+FRAME_HEIGHT = 168
 
 
 class Bird:
@@ -17,8 +19,8 @@ class Bird:
 
     IMAGE_PATH = 'bird_animation.png'
     FRAME_LAYOUT = (5, 5, 4)
-    FRAME_WIDTH = 183
-    FRAME_HEIGHT = 168
+    FRAME_WIDTH = FRAME_WIDTH
+    FRAME_HEIGHT = FRAME_HEIGHT
     DRAW_WIDTH = 120
     DRAW_HEIGHT = 110
     FRAME_RATE = 12.0
