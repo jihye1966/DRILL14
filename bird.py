@@ -51,9 +51,12 @@ class Bird:
             self.x = right
             self.direction = -1
 
+    def is_facing_right(self):
+        return self.direction == 1
+
     def draw(self):
         frame_x, frame_y = self.FRAME_RECTS[int(self.frame)]
-        flip = '' if self.direction == 1 else 'h'
+        flip = '' if self.is_facing_right() else 'h'
         Bird.image.clip_composite_draw(
             frame_x,
             frame_y,
