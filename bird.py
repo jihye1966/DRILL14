@@ -20,6 +20,7 @@ class Bird:
         for row, columns in enumerate((5, 5, 4))
         for column in range(columns)
     ]
+    FRAME_COUNT = len(FRAME_RECTS)
     image = None
 
     def __init__(self, x, y, speed, frame_offset=0):
@@ -30,15 +31,13 @@ class Bird:
         self.y = float(y)
         self.speed = abs(float(speed))
         self.direction = 1 if speed >= 0 else -1
-        self.frame = float(frame_offset % len(self.FRAME_RECTS))
+        self.frame = float(frame_offset % self.FRAME_COUNT)
 
     def update(self):
         dt = game_framework.frame_time
         self.x += self.direction * self.speed * dt
         self._bounce_at_walls()
-        self.frame = (self.frame + self.FRAME_RATE * dt) % len(
-            self.FRAME_RECTS
-        )
+        self.frame = (self.frame + self.FRAME_RATE * dt) % self.FRAME_COUNT
 
     def _bounce_at_walls(self):
         left = self.MARGIN_X
