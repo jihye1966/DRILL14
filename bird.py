@@ -81,6 +81,9 @@ class Bird:
 
 def create_flock():
     """화면 높이에 맞춰 서로 다른 궤도로 움직이는 10마리를 만든다."""
+    if len(FLOCK_POSITIONS) != len(FLOCK_Y_RATIOS):
+        raise ValueError('새 떼의 위치와 높이 데이터 개수가 다릅니다.')
+
     canvas_height = get_canvas_height()
     usable_height = max(1, canvas_height - Bird.TOP_MARGIN - Bird.BOTTOM_MARGIN)
     birds = []
