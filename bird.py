@@ -50,6 +50,7 @@ class Bird:
         self.frame = (self.frame + self.FRAME_RATE * dt) % self.FRAME_COUNT
 
     def _bounce_at_walls(self):
+        """스프라이트 절반 너비를 고려해 벽 통과를 막고 방향을 바꾼다."""
         left = self.HALF_DRAW_WIDTH
         right = get_canvas_width() - self.HALF_DRAW_WIDTH
 
