@@ -12,6 +12,8 @@ FLOCK_POSITIONS = (
 )
 FRAME_WIDTH = 183
 FRAME_HEIGHT = 168
+IMAGE_WIDTH = 918
+IMAGE_HEIGHT = 506
 
 
 class Bird:
@@ -27,11 +29,14 @@ class Bird:
     HALF_DRAW_WIDTH = DRAW_WIDTH // 2
     TOP_MARGIN = 70
     BOTTOM_MARGIN = 90
-    FRAME_RECTS = [
-        (column * FRAME_WIDTH, row * FRAME_HEIGHT)
-        for row, columns in enumerate(FRAME_LAYOUT)
-        for column in range(columns)
-    ]
+    FRAME_RECTS = []
+    for row, columns in enumerate(FRAME_LAYOUT):
+        top = round(row * IMAGE_HEIGHT / len(FRAME_LAYOUT))
+        bottom = round((row + 1) * IMAGE_HEIGHT / len(FRAME_LAYOUT))
+        for column in range(columns):
+            left = round(column * IMAGE_WIDTH / 5)
+            right = round((column + 1) * IMAGE_WIDTH / 5)
+            FRAME_RECTS.append((left, top, right - left, bottom - top))
     FRAME_COUNT = len(FRAME_RECTS)
     image = None
 
@@ -67,13 +72,15 @@ class Bird:
         return self.direction == 1
 
     def draw(self):
-        frame_x, frame_y = self.FRAME_RECTS[int(self.frame)]
+        frame_x, frame_y, frame_width, frame_height = self.FRAME_RECTS[
+            int(self.frame)
+        ]
         flip = '' if self.is_facing_right() else 'h'
         Bird.image.clip_composite_draw(
             frame_x,
             frame_y,
-            self.FRAME_WIDTH,
-            self.FRAME_HEIGHT,
+            frame_width,
+            frame_height,
             0,
             flip,
             self.x,
